@@ -1,4 +1,5 @@
 import { FlatCompat } from "@eslint/eslintrc";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -35,6 +36,7 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  eslintConfigPrettier,
 ];
 
 export default eslintConfig;
