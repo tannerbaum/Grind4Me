@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,17 +31,21 @@ export default function RootLayout({
       >
         <nav className="fixed left-0 right-0 top-0 z-20 flex justify-between py-2.5 px-5 border-b bg-white">
           <div>
-            <Link href="/" className="text-lg font-bold">
-              Home
-            </Link>
+            <Button asChild variant="outline">
+              <Link href="/">Home</Link>
+            </Button>
           </div>
           <div>
-            <Link href="/tickets" className="text-sm underline">
+            {/* Interesting convienence provided by ShadCN to using asChild above */}
+            <Link
+              href="/tickets"
+              className={buttonVariants({ variant: "outline" })}
+            >
               Tickets
             </Link>
           </div>
         </nav>
-        <main className="min-h-screen flex-1 overflow-y-auto overflow-x-hidden py-24 px-8 bg-slate-300 flex flex-col">
+        <main className="min-h-screen flex-1 overflow-y-auto overflow-x-hidden py-24 px-8 flex flex-col">
           {children}
         </main>
       </body>
