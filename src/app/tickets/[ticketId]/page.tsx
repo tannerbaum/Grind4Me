@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Placeholder } from "@/components/placeholder";
+import { Button } from "@/components/ui/button";
 import { initialTickets } from "@/data";
 
 const TicketPage = async ({ params }: PageProps<"/tickets/[ticketId]">) => {
@@ -6,10 +9,14 @@ const TicketPage = async ({ params }: PageProps<"/tickets/[ticketId]">) => {
 
   if (!ticket) {
     return (
-      <div>
-        <h2>Ticket Not Found</h2>
-        <p>The ticket with ID {ticketId} does not exist.</p>
-      </div>
+      <Placeholder
+        label="Ticket not found"
+        button={
+          <Button variant="outline" asChild>
+            <Link href="/tickets">Back to Tickets</Link>
+          </Button>
+        }
+      />
     );
   }
 
