@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Placeholder } from "@/components/placeholder";
 import { Button } from "@/components/ui/button";
 import { initialTickets } from "@/data";
+import { TicketItem } from "@/features/ticket/components/ticket-item";
 
 const TicketPage = async ({ params }: PageProps<"/tickets/[ticketId]">) => {
   const { ticketId } = await params;
@@ -21,9 +22,8 @@ const TicketPage = async ({ params }: PageProps<"/tickets/[ticketId]">) => {
   }
 
   return (
-    <div>
-      <h2>{ticket.title}</h2>
-      <p>{ticket.content}</p>
+    <div className="flex justify-center animate-fade-from-top">
+      <TicketItem ticket={ticket} isDetail />
     </div>
   );
 };
