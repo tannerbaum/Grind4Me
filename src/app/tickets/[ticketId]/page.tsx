@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Placeholder } from "@/components/placeholder";
 import { Button } from "@/components/ui/button";
-import { initialTickets } from "@/data";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
+import { getTicket } from "@/features/ticket/queries/get-ticket";
 
 const TicketPage = async ({ params }: PageProps<"/tickets/[ticketId]">) => {
   const { ticketId } = await params;
-  const ticket = initialTickets.find((t) => t.id === ticketId);
+  const ticket = await getTicket(ticketId);
 
   if (!ticket) {
     return (
