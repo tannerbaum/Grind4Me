@@ -2,19 +2,16 @@ import { prisma } from "@/lib/prisma";
 
 const tickets = [
   {
-    id: "1",
     title: "Ticket 1",
     content: "This is the content of ticket 1 from the database",
     status: "CLOSED" as const,
   },
   {
-    id: "2",
     title: "Ticket 2",
     content: "This is the content of ticket 2 from the database",
     status: "OPEN" as const,
   },
   {
-    id: "3",
     title: "Ticket 3",
     content: "This is the content of ticket 3 from the database",
     status: "IN_PROGRESS" as const,
