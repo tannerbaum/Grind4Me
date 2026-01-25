@@ -1,5 +1,3 @@
-"use client";
-
 import clsx from "clsx";
 import { SquareArrowOutUpRight, Trash } from "lucide-react";
 import Link from "next/link";
@@ -26,14 +24,14 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
     </Button>
   );
 
-  const handleDeleteTicket = async () => {
-    await deleteTicket(ticket.id);
-  };
-
   const deleteButton = (
-    <Button variant="outline" size="icon" onClick={handleDeleteTicket}>
-      <Trash className="size-4 text-red-500" />
-    </Button>
+    // A workaround to have a button trigger a server action without making TicketItem here a client component.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <form action={deleteTicket.bind(null, ticket.id) as any}>
+      <Button variant="outline" size="icon">
+        <Trash className="size-4 text-red-500" />
+      </Button>
+    </form>
   );
 
   return (
