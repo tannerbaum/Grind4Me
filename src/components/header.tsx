@@ -10,7 +10,7 @@ const Header = () => {
         <Button variant="ghost" className="gap-1" asChild>
           <Link href="/" className="flex-row">
             <Kanban className="self-end" />
-            <h1>TicketBounty</h1>
+            <h1>Grind4Me</h1>
           </Link>
         </Button>
       </div>

@@ -18,6 +18,7 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
       <Link
         href={`/tickets/${ticket.id}`}
         className="text-blue-500 hover:underline"
+        prefetch
       >
         <SquareArrowOutUpRight className="size-4 text-slate-500" />
       </Link>
@@ -27,7 +28,7 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
   const deleteButton = (
     // A workaround to have a button trigger a server action without making TicketItem here a client component.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <form action={deleteTicket.bind(null, ticket.id) as any}>
+    <form action={deleteTicket.bind(null, ticket.id, "/tickets") as any}>
       <Button variant="outline" size="icon">
         <Trash className="size-4 text-red-500" />
       </Button>
