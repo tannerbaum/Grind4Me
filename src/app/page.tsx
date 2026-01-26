@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col gap-8">
       <Heading
-        title="Welcome to TicketBounty"
+        title="Welcome to the Grind"
         description="Your place to manage your tickets"
       />
       <div className="flex-1 flex flex-col items-center">

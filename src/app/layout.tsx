@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Road Next",
+  title: "Grind4Me",
   description: "Sample fullstack Next app",
 };
 
