@@ -3,17 +3,28 @@ import { ErrorBoundary } from "react-error-boundary";
 import Heading from "@/components/heading";
 import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
+import { StandardCard } from "@/components/standard-card";
+import { TicketCreateForm } from "@/features/ticket/components/ticket-create-form";
 import { TicketList } from "@/features/ticket/components/ticket-list";
 
 const TicketsPage = () => {
   return (
     <div className="flex-1 flex flex-col gap-8">
       <Heading title="Tickets" description="All your tickets at one place" />
-      <ErrorBoundary fallback={<Placeholder label="Something went wrong!" />}>
-        <Suspense fallback={<Spinner />}>
-          <TicketList />
-        </Suspense>
-      </ErrorBoundary>
+
+      <div className="flex-1 flex flex-col self-center items-center gap-4 w-full max-w-[420px]">
+        <StandardCard
+          title="Create Ticket"
+          description="What does your character need help with today?"
+          content={<TicketCreateForm />}
+        />
+
+        <ErrorBoundary fallback={<Placeholder label="Something went wrong!" />}>
+          <Suspense fallback={<Spinner />}>
+            <TicketList />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
     </div>
   );
 };

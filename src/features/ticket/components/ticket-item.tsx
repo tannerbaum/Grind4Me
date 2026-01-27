@@ -27,6 +27,7 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
 
   const deleteButton = (
     // A workaround to have a button trigger a server action without making TicketItem here a client component.
+    // The alternative would be a hidden input to pass the ticket ID
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <form action={deleteTicket.bind(null, ticket.id, "/tickets") as any}>
       <Button variant="outline" size="icon">
