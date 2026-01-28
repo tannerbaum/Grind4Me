@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { SquareArrowOutUpRight, Trash } from "lucide-react";
+import { Pencil, SquareArrowOutUpRight, Trash } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +21,18 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
         prefetch
       >
         <SquareArrowOutUpRight className="size-4 text-slate-500" />
+      </Link>
+    </Button>
+  );
+
+  const editButton = (
+    <Button variant="outline" size="icon" asChild>
+      <Link
+        href={`/tickets/${ticket.id}/edit`}
+        className="text-blue-500 hover:underline"
+        prefetch
+      >
+        <Pencil className="size-4 text-slate-500" />
       </Link>
     </Button>
   );
@@ -61,7 +73,17 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
         </CardContent>
       </Card>
       <div className="flex flex-col gap-1">
-        {isDetail ? deleteButton : detailButton}
+        {isDetail ? (
+          <>
+            {editButton}
+            {deleteButton}
+          </>
+        ) : (
+          <>
+            {detailButton}
+            {editButton}
+          </>
+        )}
       </div>
     </div>
   );
