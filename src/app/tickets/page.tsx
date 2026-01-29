@@ -4,8 +4,8 @@ import Heading from "@/components/heading";
 import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
 import { StandardCard } from "@/components/standard-card";
-import { TicketCreateForm } from "@/features/ticket/components/ticket-create-form";
 import { TicketList } from "@/features/ticket/components/ticket-list";
+import { TicketForm } from "@/features/ticket/components/ticket-form";
 
 const TicketsPage = () => {
   return (
@@ -16,7 +16,7 @@ const TicketsPage = () => {
         <StandardCard
           title="Create Ticket"
           description="What does your character need help with today?"
-          content={<TicketCreateForm />}
+          content={<TicketForm />}
         />
 
         <ErrorBoundary fallback={<Placeholder label="Something went wrong!" />}>

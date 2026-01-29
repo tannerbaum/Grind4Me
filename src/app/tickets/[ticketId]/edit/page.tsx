@@ -1,5 +1,5 @@
 import { StandardCard } from "@/components/standard-card";
-import { TicketUpdateForm } from "@/features/ticket/components/ticket-update-form";
+import { TicketForm } from "@/features/ticket/components/ticket-form";
 import { getTicket } from "@/features/ticket/queries/get-ticket";
 import { notFound } from "next/navigation";
 
@@ -22,7 +22,7 @@ const TicketEditPage = async ({ params }: TicketEditPageProps) => {
       <StandardCard
         title="Edit Ticket"
         description="Update an existing ticket"
-        content={<TicketUpdateForm ticket={ticket} />}
+        content={<TicketForm ticket={ticket} />}
       />
     </div>
   );
