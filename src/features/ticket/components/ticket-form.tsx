@@ -9,6 +9,7 @@ import { Ticket } from "@/generated/prisma/client";
 import { createTicket } from "../actions/create-ticket";
 import { LoaderCircle } from "lucide-react";
 import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 
 type Props = {
   ticket?: Ticket;
@@ -27,11 +28,13 @@ const SubmitButton = ({ label }: { label: string }) => {
 };
 
 export const TicketForm = ({ ticket }: Props) => {
+  const [actionState, action] = useActionState(
+    ticket ? updateTicket : createTicket,
+    { message: "" },
+  );
+
   return (
-    <form
-      action={ticket ? updateTicket : createTicket}
-      className="flex flex-col gap-2"
-    >
+    <form action={action} className="flex flex-col gap-2">
       {ticket && <Input type="hidden" name="id" defaultValue={ticket.id} />}
 
       <Label htmlFor="title">Title</Label>
@@ -52,6 +55,8 @@ export const TicketForm = ({ ticket }: Props) => {
       />
 
       <SubmitButton label={ticket ? "Update" : "Create"} />
+
+      {actionState.message}
     </form>
   );
 };
