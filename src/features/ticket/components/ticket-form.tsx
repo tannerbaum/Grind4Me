@@ -10,6 +10,8 @@ import { createTicket } from "../actions/create-ticket";
 import { LoaderCircle } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
+import { FieldError } from "@/components/form/field-error";
+import { EMPTY_ACTION_STATE } from "@/components/form/utils/action-state";
 
 type Props = {
   ticket?: Ticket;
@@ -30,7 +32,7 @@ const SubmitButton = ({ label }: { label: string }) => {
 export const TicketForm = ({ ticket }: Props) => {
   const [actionState, action] = useActionState(
     ticket ? updateTicket : createTicket,
-    { message: "" },
+    EMPTY_ACTION_STATE,
   );
 
   return (
@@ -45,6 +47,7 @@ export const TicketForm = ({ ticket }: Props) => {
         defaultValue={ticket?.title}
         required
       />
+      <FieldError actionState={actionState} name="title" />
 
       <Label htmlFor="content">Content</Label>
       <Textarea
@@ -53,10 +56,9 @@ export const TicketForm = ({ ticket }: Props) => {
         defaultValue={ticket?.content}
         required
       />
+      <FieldError actionState={actionState} name="content" />
 
       <SubmitButton label={ticket ? "Update" : "Create"} />
-
-      {actionState.message}
     </form>
   );
 };
