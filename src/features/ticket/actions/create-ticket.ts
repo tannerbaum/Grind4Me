@@ -8,6 +8,8 @@ import {
   fromErrorToActionState,
   toActionState,
 } from "@/components/form/utils/action-state";
+import { setCookie } from "@/actions/cookies";
+import { COOKIE_KEYS } from "@/lib/constants";
 
 const createTicketSchema = z.object({
   title: z.string().min(1).max(120),
@@ -37,5 +39,6 @@ export const createTicket = async (
   }
 
   revalidatePath("/tickets");
+  await setCookie(COOKIE_KEYS.TOAST, "Ticket created successfully");
   return toActionState("SUCCESS", "Ticket created successfully");
 };

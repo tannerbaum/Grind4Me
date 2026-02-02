@@ -1,5 +1,7 @@
 "use server";
 
+import { setCookie } from "@/actions/cookies";
+import { COOKIE_KEYS } from "@/lib/constants";
 import {
   ActionState,
   fromErrorToActionState,
@@ -40,6 +42,7 @@ export const updateTicket = async (
     return fromErrorToActionState(error, formData);
   }
 
+  await setCookie(COOKIE_KEYS.TOAST, "Ticket updated successfully");
   revalidatePath("/tickets");
   redirect("/tickets");
 
