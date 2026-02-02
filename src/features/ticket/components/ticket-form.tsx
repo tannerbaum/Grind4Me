@@ -12,6 +12,7 @@ import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
 import { FieldError } from "@/components/form/field-error";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/action-state";
+import { Form } from "@/components/form/form";
 
 type Props = {
   ticket?: Ticket;
@@ -36,7 +37,7 @@ export const TicketForm = ({ ticket }: Props) => {
   );
 
   return (
-    <form action={action} className="flex flex-col gap-2">
+    <Form action={action} actionState={actionState}>
       {ticket && <Input type="hidden" name="id" defaultValue={ticket.id} />}
 
       <Label htmlFor="title">Title</Label>
@@ -59,6 +60,6 @@ export const TicketForm = ({ ticket }: Props) => {
       <FieldError actionState={actionState} name="content" />
 
       <SubmitButton label={ticket ? "Update" : "Create"} />
-    </form>
+    </Form>
   );
 };
