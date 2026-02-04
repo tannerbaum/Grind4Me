@@ -13,6 +13,8 @@ import { useActionState } from "react";
 import { FieldError } from "@/components/form/field-error";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/action-state";
 import { Form } from "@/components/form/form";
+import { fromCents } from "@/lib/currency";
+import { DatePicker } from "@/components/date-picker";
 
 type Props = {
   ticket?: Ticket;
@@ -45,7 +47,9 @@ export const TicketForm = ({ ticket }: Props) => {
         type="text"
         id="title"
         name="title"
-        defaultValue={ticket?.title}
+        defaultValue={
+          (actionState.payload?.get("title") as string) ?? ticket?.title
+        }
         required
       />
       <FieldError actionState={actionState} name="title" />
@@ -54,10 +58,52 @@ export const TicketForm = ({ ticket }: Props) => {
       <Textarea
         id="content"
         name="content"
-        defaultValue={ticket?.content}
+        defaultValue={
+          (actionState.payload?.get("content") as string) ?? ticket?.content
+        }
         required
       />
       <FieldError actionState={actionState} name="content" />
+
+      <div className="flex flex-row gap-2 mb-2">
+        <div className="flex-1 flex flex-col gap-2">
+          <Label htmlFor="deadline">Deadline</Label>
+          {/* <Input
+            type="date"
+            id="deadline"
+            name="deadline"
+            defaultValue={
+              (actionState.payload?.get("deadline") as string) ??
+              ticket?.deadline
+            }
+            required
+          /> */}
+          <DatePicker
+            id="deadline"
+            name="deadline"
+            defaultValue={
+              (actionState.payload?.get("deadline") as string) ??
+              ticket?.deadline
+            }
+          />
+          <FieldError actionState={actionState} name="deadline" />
+        </div>
+        <div className="flex-1 flex flex-col gap-2">
+          <Label htmlFor="reward">Reward</Label>
+          <Input
+            type="number"
+            step="0.01"
+            id="reward"
+            name="reward"
+            defaultValue={
+              (actionState.payload?.get("reward") as string) ??
+              (ticket?.reward ? fromCents(ticket?.reward) : "")
+            }
+            required
+          />
+          <FieldError actionState={actionState} name="reward" />
+        </div>
+      </div>
 
       <SubmitButton label={ticket ? "Update" : "Create"} />
     </Form>

@@ -2,10 +2,17 @@ import clsx from "clsx";
 import { Pencil, SquareArrowOutUpRight, Trash } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Ticket } from "@/generated/prisma/client";
 import { deleteTicket } from "../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
+import { toCurrencyFromCents } from "@/lib/currency";
 
 type Props = {
   ticket: Ticket;
@@ -71,6 +78,12 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
             {ticket.content}
           </p>
         </CardContent>
+        <CardFooter className="flex justify-between">
+          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {toCurrencyFromCents(ticket.reward)}
+          </p>
+        </CardFooter>
       </Card>
       <div className="flex flex-col gap-1">
         {isDetail ? (

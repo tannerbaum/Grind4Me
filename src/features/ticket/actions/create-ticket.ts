@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import z from "zod";
 import {
   ActionState,
   fromErrorToActionState,
@@ -10,11 +9,8 @@ import {
 } from "@/components/form/utils/action-state";
 import { setCookie } from "@/actions/cookies";
 import { COOKIE_KEYS } from "@/lib/constants";
-
-const createTicketSchema = z.object({
-  title: z.string().min(1).max(120),
-  content: z.string().min(1).max(1024),
-});
+import { createTicketSchema } from "./schemas";
+import { toCents } from "@/lib/currency";
 
 // There are libraries to try to take some of the boilerplate out of server actions. Might be worht a look:
 // https://next-safe-action.dev/
@@ -26,12 +22,16 @@ export const createTicket = async (
     const data = createTicketSchema.parse({
       title: formData.get("title"),
       content: formData.get("content"),
+      deadline: formData.get("deadline"),
+      reward: formData.get("reward"),
     });
 
     await prisma.ticket.create({
       data: {
         title: data.title,
         content: data.content,
+        deadline: data.deadline,
+        reward: toCents(data.reward),
       },
     });
   } catch (error) {

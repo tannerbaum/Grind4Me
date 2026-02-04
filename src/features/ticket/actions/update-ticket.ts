@@ -10,13 +10,8 @@ import {
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import z from "zod";
-
-const updateTicketSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1).max(120),
-  content: z.string().min(1).max(1024),
-});
+import { updateTicketSchema } from "./schemas";
+import { toCents } from "@/lib/currency";
 
 export const updateTicket = async (
   _actionState: ActionState,
@@ -27,6 +22,8 @@ export const updateTicket = async (
       id: formData.get("id"),
       title: formData.get("title"),
       content: formData.get("content"),
+      deadline: formData.get("deadline"),
+      reward: formData.get("reward"),
     });
 
     await prisma.ticket.update({
@@ -36,6 +33,8 @@ export const updateTicket = async (
       data: {
         title: data.title,
         content: data.content,
+        deadline: data.deadline,
+        reward: toCents(data.reward),
       },
     });
   } catch (error) {

@@ -30,6 +30,6 @@ export const consumeCookie = async (key: string) => {
     return null;
   }
 
-  cookieStore.delete(key);
+  deleteCookie(key);
   return cookieValue;
 };
