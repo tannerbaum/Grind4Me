@@ -68,17 +68,9 @@ export const TicketForm = ({ ticket }: Props) => {
       <div className="flex flex-row gap-2 mb-2">
         <div className="flex-1 flex flex-col gap-2">
           <Label htmlFor="deadline">Deadline</Label>
-          {/* <Input
-            type="date"
-            id="deadline"
-            name="deadline"
-            defaultValue={
-              (actionState.payload?.get("deadline") as string) ??
-              ticket?.deadline
-            }
-            required
-          /> */}
           <DatePicker
+            // key used to reset internal state when the form submits
+            key={actionState.timestamp}
             id="deadline"
             name="deadline"
             defaultValue={

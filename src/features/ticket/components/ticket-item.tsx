@@ -13,6 +13,7 @@ import { Ticket } from "@/generated/prisma/client";
 import { deleteTicket } from "../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
 import { toCurrencyFromCents } from "@/lib/currency";
+import { TicketMenu } from "./ticket-menu";
 
 type Props = {
   ticket: Ticket;
@@ -43,6 +44,8 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
       </Link>
     </Button>
   );
+
+  const moreMenu = <TicketMenu ticket={ticket} />;
 
   const deleteButton = (
     // A workaround to have a button trigger a server action without making TicketItem here a client component.
@@ -90,11 +93,13 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
           <>
             {editButton}
             {deleteButton}
+            {moreMenu}
           </>
         ) : (
           <>
             {detailButton}
             {editButton}
+            {moreMenu}
           </>
         )}
       </div>
