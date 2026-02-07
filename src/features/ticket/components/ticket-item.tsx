@@ -14,6 +14,7 @@ import { deleteTicket } from "../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
 import { toCurrencyFromCents } from "@/lib/currency";
 import { TicketMenu } from "./ticket-menu";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 type Props = {
   ticket: Ticket;
@@ -48,14 +49,17 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
   const moreMenu = <TicketMenu ticket={ticket} />;
 
   const deleteButton = (
-    // A workaround to have a button trigger a server action without making TicketItem here a client component.
-    // The alternative would be a hidden input to pass the ticket ID
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <form action={deleteTicket.bind(null, ticket.id, "/tickets") as any}>
-      <Button variant="outline" size="icon">
-        <Trash className="size-4 text-red-500" />
-      </Button>
-    </form>
+    <ConfirmDialog
+      //   // A workaround to have a button trigger a server action without making TicketItem here a client component.
+      //   // The alternative would be a hidden input to pass the ticket ID
+      //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      action={deleteTicket.bind(null, ticket.id, "/tickets") as any}
+      trigger={
+        <Button variant="outline" size="icon">
+          <Trash className="size-4 text-red-500" />
+        </Button>
+      }
+    />
   );
 
   return (
