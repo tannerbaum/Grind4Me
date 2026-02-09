@@ -7,9 +7,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
+import { cloneElement, useState } from "react";
 
 type Props = {
   action: (formData: FormData) => Promise<void>;
@@ -18,15 +18,21 @@ type Props = {
   description?: string;
 };
 
-export const ConfirmDialog = ({
+export const useConfirmDialog = ({
   action,
   trigger,
   title,
   description,
 }: Props) => {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dialogTrigger = cloneElement(trigger, {
+    // @ts-expect-error gonna replace
+    onClick: () => setIsOpen((state) => !state),
+  });
+
+  const dialog = (
+    <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
@@ -48,4 +54,6 @@ export const ConfirmDialog = ({
       </AlertDialogContent>
     </AlertDialog>
   );
+
+  return [dialogTrigger, dialog] as const;
 };
