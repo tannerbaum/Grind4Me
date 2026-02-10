@@ -18,24 +18,28 @@ import { updateTicketStatus } from "../actions/update-ticket-status";
 import { toast } from "sonner";
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { deleteTicket } from "../actions/delete-ticket";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 
 type Props = {
   ticket: Ticket;
 };
 
 export const TicketMenu = ({ ticket }: Props) => {
-  const [deleteButton, deleteDialog] = useConfirmDialog({
-    //   A workaround to have a button trigger a server action without making TicketItem here a client component.
-    //   The alternative would be a hidden input to pass the ticket ID
-    //   eslint-disable-next-line @typescript-eslint/no-explicit-any
-    action: deleteTicket.bind(null, ticket.id, "/tickets"),
-    trigger: (
-      <DropdownMenuItem>
-        <Trash className="h-4 w-4" />
-        <span>Delete</span>
-      </DropdownMenuItem>
-    ),
-  });
+  const pathname = usePathname();
+
+  const isOnDetailPage = pathname !== "/tickets";
+
+  const { dialog: deleteDialog, triggerProps: deleteTriggerProps } =
+    useConfirmDialog({
+      //   A workaround to have a button trigger a server action without making TicketItem here a client component.
+      //   The alternative would be a hidden input to pass the ticket ID
+      //   eslint-disable-next-line @typescript-eslint/no-explicit-any
+      action: deleteTicket.bind(
+        null,
+        ticket.id,
+        isOnDetailPage ? "/tickets" : undefined,
+      ),
+    });
 
   const handleUpdateTicketStatus = async (status: string) => {
     const promise = updateTicketStatus(ticket.id, status as Ticket["status"]);
@@ -76,7 +80,12 @@ export const TicketMenu = ({ ticket }: Props) => {
           </DropdownMenuRadioGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>{deleteButton}</DropdownMenuItem>
+            <DropdownMenuItem {...deleteTriggerProps}>
+              <div className="flex gap-2 text-red-500">
+                <Trash className="size-4 self-end text-red-500" />
+                <div>Delete</div>
+              </div>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

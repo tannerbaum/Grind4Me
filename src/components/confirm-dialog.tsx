@@ -9,27 +9,20 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
-import { cloneElement, useState } from "react";
+import { useActionState, useState } from "react";
+import { SubmitButton } from "./form/submit-button";
+import { Form } from "./form/form";
+import { ActionState, EMPTY_ACTION_STATE } from "./form/utils/action-state";
 
 type Props = {
-  action: (formData: FormData) => Promise<void>;
-  trigger: React.ReactElement;
+  action: () => Promise<ActionState>;
   title?: string;
   description?: string;
 };
 
-export const useConfirmDialog = ({
-  action,
-  trigger,
-  title,
-  description,
-}: Props) => {
+export const useConfirmDialog = ({ action, title, description }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const dialogTrigger = cloneElement(trigger, {
-    // @ts-expect-error gonna replace
-    onClick: () => setIsOpen((state) => !state),
-  });
+  const [actionState, formAction] = useActionState(action, EMPTY_ACTION_STATE);
 
   const dialog = (
     <AlertDialog open={isOpen}>
@@ -44,16 +37,27 @@ export const useConfirmDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={() => setIsOpen(false)}>
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <form action={action}>
-              <Button type="submit">Confirm</Button>
-            </form>
+            <Form
+              action={formAction}
+              actionState={actionState}
+              onSuccess={() => setIsOpen(false)}
+            >
+              <SubmitButton label="Confirm" />
+            </Form>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 
-  return [dialogTrigger, dialog] as const;
+  return {
+    dialog,
+    triggerProps: {
+      onClick: () => setIsOpen((state) => !state),
+    },
+  };
 };

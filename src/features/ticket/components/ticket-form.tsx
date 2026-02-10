@@ -1,35 +1,21 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { updateTicket } from "../actions/update-ticket";
 import { Ticket } from "@/generated/prisma/client";
 import { createTicket } from "../actions/create-ticket";
-import { LoaderCircle } from "lucide-react";
-import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
 import { FieldError } from "@/components/form/field-error";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/action-state";
 import { Form } from "@/components/form/form";
 import { fromCents } from "@/lib/currency";
 import { DatePicker } from "@/components/date-picker";
+import { SubmitButton } from "@/components/form/submit-button";
 
 type Props = {
   ticket?: Ticket;
-};
-
-// useFormStatus needs to be used in a child of a form
-const SubmitButton = ({ label }: { label: string }) => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button disabled={pending} type="submit">
-      {pending && <LoaderCircle className="size-4 mr-2 animate-spin" />}
-      {label}
-    </Button>
-  );
 };
 
 export const TicketForm = ({ ticket }: Props) => {
