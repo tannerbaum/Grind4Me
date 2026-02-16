@@ -30,7 +30,9 @@ export const StandardCard = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       {content && <CardContent>{content}</CardContent>}
-      {footer && <CardFooter>{footer}</CardFooter>}
+      {footer && (
+        <CardFooter className="flex justify-between">{footer}</CardFooter>
+      )}
     </Card>
   );
 };
