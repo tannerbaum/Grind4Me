@@ -6,8 +6,6 @@ import { ThemeSwitcher } from "@/features/theme/theme-switcher";
 import { Button, buttonVariants } from "./ui/button";
 import { signOut } from "@/features/auth/actions/sign-out";
 import { SubmitButton } from "./form/submit-button";
-import { getAuth } from "@/features/auth/get-auth";
-import { useEffect, useState } from "react";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 
 const Header = () => {

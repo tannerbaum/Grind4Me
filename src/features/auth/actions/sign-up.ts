@@ -1,13 +1,12 @@
 "use server";
 
-// import { hash } from "@node-rs/argon2";
 import {
   ActionState,
   fromErrorToActionState,
   toActionState,
 } from "@/components/form/utils/action-state";
 import { Prisma } from "@/generated/prisma/client";
-import { cookies } from "next/headers";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import z from "zod";
 
@@ -41,25 +40,13 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       Object.fromEntries(formData),
     );
 
-    // const passwordHash = await hash(password);
-
-    // TODO: replace with BetterAuth
-    // const user = await prisma.user.create({
-    //   data: {
-    //     username,
-    //     email,
-    //     passwordHash,
-    //   },
-    // });
-
-    // const session = await lucia.createSession(user.id, {});
-    // const sessionCookie = lucia.createSessionCookie(session.id);
-
-    // (await cookies()).set(
-    //   sessionCookie.name,
-    //   sessionCookie.value,
-    //   sessionCookie.attributes
-    // );
+    await auth.api.signUpEmail({
+      body: {
+        name: username,
+        email,
+        password,
+      },
+    });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&

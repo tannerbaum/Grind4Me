@@ -1,15 +1,12 @@
 "use server";
 
-// import { verify } from "@node-rs/argon2";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
 import {
   ActionState,
   fromErrorToActionState,
-  toActionState,
 } from "@/components/form/utils/action-state";
+import { auth } from "@/lib/auth";
 
 const signInSchema = z.object({
   email: z.string().min(1, { message: "Is required" }).max(191).email(),
@@ -22,6 +19,7 @@ export const signIn = async (_actionState: ActionState, formData: FormData) => {
       Object.fromEntries(formData),
     );
 
+    // ? Not sure if there is any value of this anymore, perhaps for logging
     // const user = await prisma.user.findUnique({
     //   where: { email },
     // });
@@ -30,20 +28,13 @@ export const signIn = async (_actionState: ActionState, formData: FormData) => {
     //   return toActionState("ERROR", "Incorrect email or password", formData);
     // }
 
-    // const validPassword = await verify(user.passwordHash, password);
-
-    // if (!validPassword) {
-    //   return toActionState("ERROR", "Incorrect email or password", formData);
-    // }
-
-    // const session = await lucia.createSession(user.id, {});
-    // const sessionCookie = lucia.createSessionCookie(session.id);
-
-    // (await cookies()).set(
-    //   sessionCookie.name,
-    //   sessionCookie.value,
-    //   sessionCookie.attributes
-    // );
+    // cookies will be set automatically thanks to better auth next plugin
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+      },
+    });
   } catch (error) {
     return fromErrorToActionState(error, formData);
   }
