@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Pencil, SquareArrowOutUpRight, Trash } from "lucide-react";
+import { Pencil, SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,13 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Ticket } from "@/generated/prisma/client";
 import { TICKET_ICONS } from "../constants";
 import { toCurrencyFromCents } from "@/lib/currency";
 import { TicketMenu } from "./ticket-menu";
+import { TicketWithMetadata } from "../types";
 
 type Props = {
-  ticket: Ticket;
+  ticket: TicketWithMetadata;
   isDetail?: boolean;
 };
 
@@ -70,7 +70,9 @@ export const TicketItem = ({ ticket, isDetail }: Props) => {
           </p>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {ticket.deadline} by {ticket.user.name}
+          </p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFromCents(ticket.reward)}
           </p>

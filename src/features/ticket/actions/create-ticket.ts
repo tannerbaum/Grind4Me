@@ -11,6 +11,8 @@ import { setCookie } from "@/actions/cookies";
 import { COOKIE_KEYS } from "@/lib/constants";
 import { createTicketSchema } from "./schemas";
 import { toCents } from "@/lib/currency";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 // There are libraries to try to take some of the boilerplate out of server actions. Might be worht a look:
 // https://next-safe-action.dev/
@@ -18,6 +20,12 @@ export const createTicket = async (
   _actionState: ActionState,
   formData: FormData,
 ) => {
+  const session = await auth.api.getSession();
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
   try {
     const data = createTicketSchema.parse({
       title: formData.get("title"),
@@ -32,6 +40,7 @@ export const createTicket = async (
         content: data.content,
         deadline: data.deadline,
         reward: toCents(data.reward),
+        userId: session.user.id,
       },
     });
   } catch (error) {
