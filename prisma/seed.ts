@@ -1,10 +1,11 @@
 import { Prisma, Ticket } from "@/generated/prisma/client";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 // Type helper I found from Prisma: https://www.prisma.io/docs/orm/prisma-client/type-safety#type-utilities
 type TicketCreateBody = Prisma.Args<typeof prisma.ticket, "create">["data"];
 
-const tickets: Array<TicketCreateBody> = [
+const tickets: Array<Omit<TicketCreateBody, "userId">> = [
   {
     title: "Ticket 1",
     content: "This is the content of ticket 1 from the database",
@@ -29,10 +30,30 @@ const tickets: Array<TicketCreateBody> = [
 ];
 
 const seed = async () => {
+  await prisma.user.deleteMany();
   await prisma.ticket.deleteMany();
 
+  const adminUser = await auth.api.signUpEmail({
+    body: {
+      name: "Admin User",
+      email: "admin@admin.com",
+      password: "password1234",
+    },
+  });
+
+  await auth.api.signUpEmail({
+    body: {
+      name: "Normal User",
+      email: process.env.SEED_EMAIL || "",
+      password: "password1234",
+    },
+  });
+
   await prisma.ticket.createMany({
-    data: tickets,
+    data: tickets.map((ticket) => ({
+      ...ticket,
+      userId: adminUser.user.id,
+    })),
   });
 };
 
